@@ -1,0 +1,430 @@
+{
+  "version": 1,
+  "notes": "Project-specific title rules, not a standard occupation taxonomy. Multiple different family matches require review. Generic software/engineering titles are deliberately not split into backend/frontend without title evidence.",
+  "families": [
+    {
+      "name": "Software development",
+      "resume_categories": [
+        "INFORMATION-TECHNOLOGY"
+      ],
+      "roles": [
+        {
+          "name": "Frontend development",
+          "pattern": "\\b(front ?end (developer|engineer|software|web)|ui developer|react developer|angular developer)\\b"
+        },
+        {
+          "name": "Backend development",
+          "pattern": "\\b(back ?end (developer|engineer|software|web))\\b"
+        },
+        {
+          "name": "Full-stack development",
+          "pattern": "\\bfull ?stack\\b"
+        },
+        {
+          "name": "Mobile development",
+          "pattern": "\\b((ios|android|mobile) (developer|engineer))\\b"
+        },
+        {
+          "name": "Software testing",
+          "pattern": "\\b(sdet|software (test|quality)|qa (automation|engineer)|test automation|etl tester)\\b"
+        },
+        {
+          "name": "Software development (specialty unspecified)",
+          "pattern": "\\b(software (engineer\\w*|developer|development|architect|programmer|integration)|software (systems|solutions) (engineer\\w*|developer|architect)|programmer|application developer|applications developer|web developer|java developer|python developer|dotnet developer|net developer|c\\+\\+ developer|embedded.*developer)\\b",
+          "exclude": "\\b(cnc|machinist)\\b"
+        }
+      ]
+    },
+    {
+      "name": "Data and AI",
+      "resume_categories": [],
+      "roles": [
+        {
+          "name": "Machine learning and data science",
+          "pattern": "\\b(machine learning|data scien(tist|ce)|ai engineer|artificial intelligence|ml engineer|mlops|computer vision)\\b"
+        },
+        {
+          "name": "Data engineering and architecture",
+          "pattern": "\\b(data engineer|data engineering|data architect|data modeler|etl (developer|engineer)|analytics engineer|data warehouse|database (engineer|developer|architect|administrator))\\b"
+        },
+        {
+          "name": "Data analysis and business intelligence",
+          "pattern": "\\b(data analy(st|sis|tics)|business intelligence|bi (developer|analyst)|analytics (analyst|manager|director)|tableau developer)\\b"
+        }
+      ]
+    },
+    {
+      "name": "IT, cloud and cybersecurity",
+      "resume_categories": [
+        "INFORMATION-TECHNOLOGY"
+      ],
+      "roles": [
+        {
+          "name": "Cybersecurity",
+          "pattern": "\\b(cyber ?security|information security|infosec|security (engineer|analyst|architect)|information assurance)\\b"
+        },
+        {
+          "name": "Cloud and infrastructure",
+          "pattern": "\\b(devops|site reliability|sre|cloud (engineer|architect)|network (engineer|administrator|architect)|systems? administrator|infrastructure engineer)\\b"
+        },
+        {
+          "name": "IT support and enterprise systems",
+          "pattern": "\\b(help ?desk|desktop support|technical support|application support|it support|information technology|it (specialist|technician|manager|director|analyst)|systems? analyst|sap (consultant|developer)|salesforce (developer|administrator)|solutions architect)\\b"
+        }
+      ]
+    },
+    {
+      "name": "Accounting and finance",
+      "resume_categories": [
+        "ACCOUNTANT",
+        "FINANCE"
+      ],
+      "roles": [
+        {
+          "name": "Accounting, payroll and tax",
+          "pattern": "\\b(accountant|accounting|accounts payable|accounts receivable|bookkeep(er|ing)|payroll|tax (manager|associate|analyst|specialist)|controller|audit(or|ing)|audit (associate|manager|senior))\\b"
+        },
+        {
+          "name": "Financial analysis and leadership",
+          "pattern": "\\b(financial (analyst|advisor|adviser|planner|controller|officer|reporting)|finance|fp&a|treasury|cfo|investment (analyst|banker)|fund (accountant|trader))\\b"
+        }
+      ]
+    },
+    {
+      "name": "Banking and insurance",
+      "resume_categories": [
+        "BANKING"
+      ],
+      "roles": [
+        {
+          "name": "Banking and lending",
+          "pattern": "\\b(banker|banking|teller|mortgage|loan (officer|processor|specialist|origination)|credit analyst)\\b",
+          "exclude": "\\b(engineer\\w*|software|developer|data|it|sales)\\b"
+        },
+        {
+          "name": "Insurance and claims",
+          "pattern": "\\b(underwriter|underwriting|actuar(y|ial)|claims (adjuster|specialist|examiner|representative)|insurance (agent|broker))\\b"
+        }
+      ]
+    },
+    {
+      "name": "Sales and business development",
+      "resume_categories": [
+        "SALES",
+        "BUSINESS-DEVELOPMENT"
+      ],
+      "roles": [
+        {
+          "name": "Sales and account management",
+          "pattern": "\\b(sales|salesperson|account executive|account manager|account representative|business development|sdr|bdr)\\b",
+          "exclude": "\\b(retail|store|cashier|merchandis|insurance|catering)"
+        }
+      ]
+    },
+    {
+      "name": "Marketing and communications",
+      "resume_categories": [
+        "PUBLIC-RELATIONS",
+        "DIGITAL-MEDIA"
+      ],
+      "roles": [
+        {
+          "name": "Marketing and communications",
+          "pattern": "\\b(marketing|public relations|communications (specialist|manager|director)|social media|seo|copywriter|content (writer|strategist)|ads manager|brand manager)\\b",
+          "exclude": "\\b(sales|account executive)\\b"
+        }
+      ]
+    },
+    {
+      "name": "HR and recruiting",
+      "resume_categories": [
+        "HR"
+      ],
+      "roles": [
+        {
+          "name": "Human resources and recruitment",
+          "pattern": "\\b(human resources|hr|recruiter|recruiting|recruitment|talent acquisition|people operations|benefits (specialist|administrator)|compensation analyst)\\b",
+          "exclude": "\\b(payroll|software|developer|engineer)\\b|\\d+\\s*/?\\s*hr\\b"
+        }
+      ]
+    },
+    {
+      "name": "Administration and office support",
+      "resume_categories": [],
+      "roles": [
+        {
+          "name": "Office administration",
+          "pattern": "\\b(administrative (assistant|coordinator)|executive assistant|office (manager|administrator|assistant|coordinator)|receptionist|secretary|data entry)\\b",
+          "exclude": "\\b(legal|medical|dental|veterinary|nurse|nursing|patient|clinical|health)\\b"
+        }
+      ]
+    },
+    {
+      "name": "Customer service",
+      "resume_categories": [
+        "BPO"
+      ],
+      "roles": [
+        {
+          "name": "Customer support and success",
+          "pattern": "\\b(customer (service|support|success|care)|call cent(er|re)|contact cent(er|re))\\b",
+          "exclude": "\\b(engineer|developer|retail|store)\\b"
+        }
+      ]
+    },
+    {
+      "name": "Project, product and business operations",
+      "resume_categories": [
+        "CONSULTANT"
+      ],
+      "roles": [
+        {
+          "name": "Product management",
+          "pattern": "\\b(product (manager|owner|management)|scrum master)\\b"
+        },
+        {
+          "name": "Project and program management",
+          "pattern": "\\b((project|program) (manager|coordinator|director|management)|pmo)\\b",
+          "exclude": "\\b(construction|clinical|nursing|healthcare|education)\\b"
+        },
+        {
+          "name": "Business analysis and operations",
+          "pattern": "\\b(business analyst|management analyst|operations (manager|analyst|director|supervisor|coordinator)|director of operations|management consultant|business consultant|chief operating officer)\\b",
+          "exclude": "\\b(sales|marketing|clinical|nursing|retail|store|warehouse|logistics|manufacturing|production|people|hr|finance|financial)\\b"
+        }
+      ]
+    },
+    {
+      "name": "Healthcare",
+      "resume_categories": [
+        "HEALTHCARE"
+      ],
+      "roles": [
+        {
+          "name": "Nursing",
+          "pattern": "\\b(nurse|nursing|rn|lpn|lvn|cna)\\b"
+        },
+        {
+          "name": "Therapy and mental health",
+          "pattern": "\\b(therapist|therapy|psychologist|psychiatrist|social worker|counselor|counsellor|bcba|behavior analyst|behavior technician|speech language pathologist)\\b",
+          "exclude": "\\b(sales|admission|financial|school|camp)\\b"
+        },
+        {
+          "name": "Medical, dental and allied health",
+          "pattern": "\\b(physician|doctor|dentist|dental|pharmacist|pharmacy|medical assistant|patient care|phlebotomist|radiolog|radiograph|ct technologist|imaging technologist|surgical|optometr|veterinar|paramedic|emt|sonographer|dietitian|respiratory)"
+        },
+        {
+          "name": "Healthcare administration and support",
+          "pattern": "\\b((medical|dental|veterinary) (receptionist|secretary)|patient (access|service|transport)|clinical (research|documentation)|mri technologist|surgical technologist)\\b"
+        }
+      ]
+    },
+    {
+      "name": "Engineering",
+      "resume_categories": [
+        "ENGINEERING"
+      ],
+      "roles": [
+        {
+          "name": "Electrical and electronics engineering",
+          "pattern": "\\b(electrical engineer|electronics engineer|controls engineer|substation engineer|transmission line engineer|hardware engineer|rf engineer)\\b"
+        },
+        {
+          "name": "Mechanical and manufacturing engineering",
+          "pattern": "\\b(mechanical engineer|manufacturing engineer|industrial engineer|process engineer|quality engineer|test engineer|design engineer)\\b",
+          "exclude": "\\b(software|data|qa|automation)\\b"
+        },
+        {
+          "name": "Civil and environmental engineering",
+          "pattern": "\\b(civil.*engineer|structural engineer|environmental engineer|water resource engineer|geotechnical engineer)\\b"
+        },
+        {
+          "name": "Engineering (specialty unspecified)",
+          "pattern": "\\b(project engineer|systems? engineer|engineering (manager|director)|engineer( i{1,3}| [123])?)$",
+          "exclude": "\\b(software|data|cloud|security|cybersecurity|devops|network|front ?end|back ?end|full ?stack|machine learning|artificial intelligence|business intelligence|mobile|android|ios|sre|support|site reliability|infrastructure|sales)\\b"
+        }
+      ]
+    },
+    {
+      "name": "Manufacturing and maintenance",
+      "resume_categories": [],
+      "roles": [
+        {
+          "name": "Production and maintenance",
+          "pattern": "\\b(maintenance|manufacturing|production (operator|supervisor|manager|associate)|plant manager|machine operator|machinist|cnc|assembler|assembly|field service technician|service technician|quality (inspector|technician)|janitor|custodian|facilities (manager|technician))\\b",
+          "exclude": "\\b(engineer\\w*|software|automotive|aircraft|aviation|hvac|dental|patient|medical|pharmacy)\\b"
+        }
+      ]
+    },
+    {
+      "name": "Construction and skilled trades",
+      "resume_categories": [
+        "CONSTRUCTION"
+      ],
+      "roles": [
+        {
+          "name": "Construction and trades",
+          "pattern": "\\b(construction|preconstruction|superintendent|estimator|electrician|plumber|hvac|carpenter|welder|roofer|building inspector|surveyor)\\b",
+          "exclude": "\\b(engineer\\w*|software|school|accountant|accounting|finance|collision|auto|diesel|mechanic)\\b"
+        }
+      ]
+    },
+    {
+      "name": "Retail",
+      "resume_categories": [
+        "APPAREL"
+      ],
+      "roles": [
+        {
+          "name": "Retail sales and store management",
+          "pattern": "\\b(retail|store (manager|assistant|associate)|cashier|merchandiser|merchandising|stock associate)\\b",
+          "exclude": "\\b(software|engineer\\w*|data|banker|pharmacist|pharmacy|nurse|optometrist|application support|systems? analyst|it)\\b"
+        }
+      ]
+    },
+    {
+      "name": "Logistics and transport",
+      "resume_categories": [],
+      "roles": [
+        {
+          "name": "Driving and delivery",
+          "pattern": "\\b(driver|delivery specialist|courier|dispatcher)\\b",
+          "exclude": "\\b(software|engineer|developer)\\b"
+        },
+        {
+          "name": "Warehouse and supply chain",
+          "pattern": "\\b(warehouse|package handler|material handler|forklift|logistics|supply chain|procurement|purchasing|buyer|shipping|receiving|receiver|shipper|demand planning)\\b",
+          "exclude": "\\b(software|engineer|developer|media buyer)\\b"
+        }
+      ]
+    },
+    {
+      "name": "Hospitality and food service",
+      "resume_categories": [
+        "CHEF"
+      ],
+      "roles": [
+        {
+          "name": "Food service and hospitality",
+          "pattern": "\\b(chef|cook|restaurant|barista|bartender|server|hostess|housekeep(er|ing)|hotel|catering|food service|dishwasher|concierge)\\b",
+          "exclude": "\\b(software|engineer|developer|sql|database|systems?|administrator|network|data|salesforce)\\b"
+        }
+      ]
+    },
+    {
+      "name": "Education and training",
+      "resume_categories": [
+        "TEACHER"
+      ],
+      "roles": [
+        {
+          "name": "Teaching and education",
+          "pattern": "\\b(teacher|teaching|professor|lecturer|tutor|school counselor|academic|instructional designer|special education|learning and development|admissions? (counselor|advisor|director))\\b",
+          "exclude": "\\b(nurse|nursing|clinical|medical|healthcare|sales|hospital|ltach|patient)\\b"
+        }
+      ]
+    },
+    {
+      "name": "Legal and compliance",
+      "resume_categories": [
+        "ADVOCATE"
+      ],
+      "roles": [
+        {
+          "name": "Legal practice and support",
+          "pattern": "\\b(attorney|lawyer|paralegal|legal|litigation|general counsel|corporate counsel)\\b"
+        },
+        {
+          "name": "Compliance and regulatory affairs",
+          "pattern": "\\b(compliance (officer|analyst|specialist|manager)|regulatory affairs)\\b"
+        }
+      ]
+    },
+    {
+      "name": "Design and creative media",
+      "resume_categories": [
+        "DESIGNER",
+        "ARTS"
+      ],
+      "roles": [
+        {
+          "name": "Design, writing and media production",
+          "pattern": "\\b(graphic designer|visual designer|user experience designer|user interface designer|ux|ui designer|product designer|interior designer|fashion designer|apparel designer|artist|animator|photographer|videographer|video editor|journalist|editor|technical writer|content creator)\\b",
+          "exclude": "\\b(software|engineer|developer|marketing)\\b"
+        }
+      ]
+    },
+    {
+      "name": "Science, research and agriculture",
+      "resume_categories": [
+        "AGRICULTURE"
+      ],
+      "roles": [
+        {
+          "name": "Laboratory, research and agricultural work",
+          "pattern": "\\b(research (scientist|associate|assistant)|laboratory technician|lab technician|chemist|biologist|microbiologist|agronomist|agricultur|farm worker|bioprocessing)\\b",
+          "exclude": "\\b(clinical|medical|dental|data|machine learning|software)\\b"
+        }
+      ]
+    },
+    {
+      "name": "Automotive",
+      "resume_categories": [
+        "AUTOMOBILE"
+      ],
+      "roles": [
+        {
+          "name": "Vehicle service and repair",
+          "pattern": "\\b(automotive (technician|mechanic)|auto (detailer|glass|appraiser|body)|diesel (mechanic|technician)|vehicle technician|collision (repair|estimator))\\b"
+        }
+      ]
+    },
+    {
+      "name": "Aviation",
+      "resume_categories": [
+        "AVIATION"
+      ],
+      "roles": [
+        {
+          "name": "Flight and aircraft operations",
+          "pattern": "\\b(pilot|flight attendant|aircraft (mechanic|technician)|aviation (mechanic|technician)|air traffic controller)\\b",
+          "exclude": "\\b(plant|software|program)\\b"
+        }
+      ]
+    },
+    {
+      "name": "Fitness and recreation",
+      "resume_categories": [
+        "FITNESS"
+      ],
+      "roles": [
+        {
+          "name": "Fitness and recreation",
+          "pattern": "\\b(personal trainer|fitness|athletic trainer|sports coach|lifeguard|recreation|yoga instructor|camp counselor)\\b",
+          "exclude": "\\b(sales|software|engineer)\\b"
+        }
+      ]
+    },
+    {
+      "name": "Property and real estate",
+      "resume_categories": [],
+      "roles": [
+        {
+          "name": "Property and real estate services",
+          "pattern": "\\b(property (manager|administrator)|leasing (consultant|agent|manager)|real estate (agent|broker|manager)|realtor)\\b"
+        }
+      ]
+    },
+    {
+      "name": "Safety and protective services",
+      "resume_categories": [],
+      "roles": [
+        {
+          "name": "Safety and protective services",
+          "pattern": "\\b(security (officer|guard)|police officer|firefighter|safety (manager|specialist|officer)|ehs (specialist|manager))\\b",
+          "exclude": "\\b(software|cyber|information|patient|nuclear|radiation)\\b"
+        }
+      ]
+    }
+  ]
+}

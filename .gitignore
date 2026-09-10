@@ -1,0 +1,15 @@
+.venv/
+.env
+.env.*
+!.env.example
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+.jupyter/
+.cache/
+.DS_Store
+# Keep all datasets and generated artifacts local; retain layout documentation.
+/data-acquisition/data/**
+!/data-acquisition/data/**/
+!/data-acquisition/data/**/README.md
+*.log
