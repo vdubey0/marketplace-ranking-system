@@ -34,10 +34,11 @@ ARCHETYPE = {
 
 class ResumeGeneratorTests(unittest.TestCase):
     def test_pdf_text_normalizes_ligatures_and_hyphenated_line_wraps(self):
-        extracted = "oﬀer coordination · full-\ncycle recruiting"
+        extracted = "oﬀer coordination · full-\ncycle recruiting · lockout/\ntagout"
         normalized = normalized_pdf_text(extracted)
         self.assertIn("offer coordination", normalized)
         self.assertIn("full-cycle recruiting", normalized)
+        self.assertIn("lockout/tagout", normalized)
 
     def test_role_archetype_and_request_schema(self):
         data = dict(ARCHETYPE)

@@ -140,7 +140,10 @@ def recorded_path(path: Path) -> str:
 def normalized_pdf_text(value: str) -> str:
     """Normalize PDF extraction artifacts without changing visible resume content."""
     value = unicodedata.normalize("NFKC", value)
-    value = re.sub(r"(?<=\w)-\s+(?=\w)", "-", value)
+    # The renderer can wrap compound skills after punctuation, for example
+    # ``full-\ncycle`` and ``lockout/\ntagout``. PDF extraction preserves the
+    # newline even though the phrase is visibly continuous.
+    value = re.sub(r"\s*([/&+\-])\s*", r"\1", value)
     return re.sub(r"\s+", " ", value).casefold()
 
 
