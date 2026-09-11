@@ -14,3 +14,10 @@ marketplace-ranking-system/
 
 Run commands from the repository root. Detailed commands and data documentation
 are in `data-acquisition/README.md`.
+
+Relevance labels and simulated performance outcomes are built in
+[`ground-truth-generation/`](ground-truth-generation/).
+
+The downstream matching work is organized in [`matching-pipeline/`](matching-pipeline/):
+retrieval produces a high-recall candidate set, modeling reranks that set, and
+allocation applies marketplace-wide capacity and business constraints.

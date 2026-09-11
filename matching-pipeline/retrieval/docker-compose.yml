@@ -1,0 +1,19 @@
+services:
+  postgres:
+    image: pgvector/pgvector:pg16
+    environment:
+      POSTGRES_DB: retrieval
+      POSTGRES_USER: retrieval
+      POSTGRES_PASSWORD: retrieval
+    ports:
+      - "6024:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U retrieval -d retrieval"]
+      interval: 2s
+      timeout: 2s
+      retries: 15
+    volumes:
+      - retrieval_pgdata:/var/lib/postgresql/data
+
+volumes:
+  retrieval_pgdata:
