@@ -1,0 +1,8 @@
+numpy>=1.26,<3
+pandas>=2.2,<3.1
+pyarrow>=19,<24
+tqdm>=4.66,<5
+matplotlib>=3.9,<4
+seaborn>=0.13,<1
+jupyterlab>=4.2,<5
+nbconvert>=7.16,<8
