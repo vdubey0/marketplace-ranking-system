@@ -14,4 +14,6 @@ __pycache__/
 !/data-acquisition/data/**/README.md
 /ground-truth-generation/data/
 /matching-pipeline/retrieval/artifacts/
+/matching-pipeline/modeling/artifacts/
+/matching-pipeline/allocation/artifacts/
 *.log
