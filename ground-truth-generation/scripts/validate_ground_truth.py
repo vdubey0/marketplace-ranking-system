@@ -52,6 +52,7 @@ def validate(data_dir: Path) -> dict:
     success_counts = Counter()
     probability_min, probability_max = 1.0, 0.0
     outcome_rows = 0
+    calibration = defaultdict(lambda: {"count": 0, "probability_sum": 0.0, "successes": 0})
     for batch in pq.ParquetFile(data_dir / "marketplace_outcomes.parquet").iter_batches(
         columns=["relevance_grade", "true_success_probability", "potential_success",
                  "successful_performance", "selected", "observed_success"],
@@ -64,6 +65,12 @@ def validate(data_dir: Path) -> dict:
         probability_min = min(probability_min, float(frame.true_success_probability.min()))
         probability_max = max(probability_max, float(frame.true_success_probability.max()))
         outcome_rows += len(frame)
+        bins = (frame.true_success_probability.mul(10).astype(int).clip(upper=9))
+        for bin_number, group in frame.groupby(bins):
+            bucket = calibration[int(bin_number)]
+            bucket["count"] += len(group)
+            bucket["probability_sum"] += float(group.true_success_probability.sum())
+            bucket["successes"] += int(group.successful_performance.sum())
         for grade, group in frame.groupby("relevance_grade"):
             grade = int(grade)
             outcome_counts[grade] += len(group)
@@ -74,6 +81,15 @@ def validate(data_dir: Path) -> dict:
     mean_probability = {str(g): probability_sums[g] / outcome_counts[g] for g in sorted(outcome_counts)}
     success_rate = {str(g): success_counts[g] / outcome_counts[g] for g in sorted(outcome_counts)}
     assert list(mean_probability.values()) == sorted(mean_probability.values())
+    calibration_rows = []
+    for bin_number, values in sorted(calibration.items()):
+        mean_p = values["probability_sum"] / values["count"]
+        rate = values["successes"] / values["count"]
+        calibration_rows.append({"probability_bin": f"{bin_number / 10:.1f}-{(bin_number + 1) / 10:.1f}",
+                                 "count": values["count"], "mean_probability": mean_p,
+                                 "realized_success_rate": rate, "absolute_error": abs(rate - mean_p)})
+    well_populated = [row for row in calibration_rows if row["count"] >= 10_000]
+    assert max(row["absolute_error"] for row in well_populated) < 0.02
 
     report = {
         "status": "passed",
@@ -91,6 +107,7 @@ def validate(data_dir: Path) -> dict:
         "true_success_probability_range": [probability_min, probability_max],
         "mean_success_probability_by_relevance_grade": mean_probability,
         "realized_success_rate_by_relevance_grade": success_rate,
+        "calibration_by_probability_bin": calibration_rows,
         "selected_and_observed_labels_are_deferred": True,
     }
     (data_dir / "labeling_quality_report.json").write_text(json.dumps(report, indent=2) + "\n")

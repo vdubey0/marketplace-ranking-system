@@ -23,6 +23,18 @@ Validate the completed label files and recreate `labeling_quality_report.json`:
 .venv/bin/python ground-truth-generation/scripts/validate_ground_truth.py
 ```
 
+Regenerate only performance outcomes after changing the outcome simulator:
+
+```bash
+.venv/bin/python ground-truth-generation/scripts/regenerate_outcomes.py
+```
+
+Create noisy pre-work interview and assessment signals for every candidate:
+
+```bash
+.venv/bin/python ground-truth-generation/scripts/generate_candidate_assessments.py
+```
+
 The notebook at `notebooks/labeling_sanity_check.ipynb` contains the same checks
 plus charts, example candidate-job pairs, and plain-language conclusions. Its
 outputs are intentionally cleared before commit so generated data stays local.

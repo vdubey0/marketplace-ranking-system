@@ -61,6 +61,12 @@ def edu(value: str) -> str:
 def seed_for(value: str, seed: int) -> int:
     return int.from_bytes(hashlib.sha256(f"{seed}|{value}".encode()).digest()[:8], "big")
 
+def deterministic_uniform(keys: pd.Series, salt: str) -> np.ndarray:
+    """Return reproducible U[0, 1) values from an independently salted stream."""
+    hashes = pd.util.hash_pandas_object(keys + "|" + salt, index=False).to_numpy(dtype="uint64")
+    # Keep the 53 bits that float64 can represent exactly.
+    return (hashes >> np.uint64(11)).astype(np.float64) * (1.0 / (1 << 53))
+
 def candidates_table(out: Path) -> pd.DataFrame:
     profiles = [json.loads(p.read_text()) for p in sorted((data_directory()/"synthetic/generated/resumes/v1/profiles").glob("*.json"))]
     names = [f"{a} {b}" for a in FIRST for b in LAST]
@@ -196,21 +202,38 @@ def hidden(cands,jobs,out,seed):
       "latent_specialization":np.clip(.2+.08*np.minimum(count,7)+jobs.required_certifications.map(bool).to_numpy()*.15+rng.normal(0,.12,len(jobs)),.03,.98),"simulation_seed":seed})
     ch.to_parquet(out/"candidate_hidden.parquet",index=False);jh.to_parquet(out/"job_hidden.parquet",index=False);return ch,jh
 
+def simulate_pair_outcomes(f, ch, jh, seed):
+    """Evaluate supplied pair fit scores using the existing deterministic simulator."""
+    c = ch.set_index('candidate_id').loc[f.candidate_id]
+    j = jh.set_index('job_id').loc[f.job_id]
+    fit = f.skill_score.to_numpy() * c.latent_skill_mastery.to_numpy()
+    keys = f.job_id + '|' + f.candidate_id + f'|{seed}'
+    noise = np.sin(deterministic_uniform(keys, 'probability_noise_v2') * 2 * math.pi) * .25
+    z = (-2 + 1.1 * fit + .65 * f.occupation_score.to_numpy()
+         + .35 * f.experience_score.to_numpy() + 1.15 * c.latent_ability.to_numpy()
+         + .8 * c.latent_reliability.to_numpy() + .8 * c.latent_domain_depth.to_numpy()
+         - 1.25 * j.latent_difficulty.to_numpy()
+         - .65 * j.latent_specialization.to_numpy() * (1 - fit) + noise)
+    probability = 1 / (1 + np.exp(-z))
+    return pd.DataFrame({'job_id': f.job_id.to_numpy(), 'candidate_id': f.candidate_id.to_numpy(),
+                         'true_success_probability': probability.round(6),
+                         'successful_performance': deterministic_uniform(keys, 'realized_outcome_v2') < probability})
+
 def outcomes(out,ch,jh,seed):
-    cm=ch.set_index("candidate_id");jm=jh.set_index("job_id");writer=None;total=0
+    writer=None;total=0
+    final_path=out/"marketplace_outcomes.parquet";temporary_path=out/"marketplace_outcomes.tmp.parquet"
     try:
       for path in [out/"relevance_ground_truth.parquet",out/"relevance_negative_sample.parquet"]:
        for batch in tqdm(pq.ParquetFile(path).iter_batches(100000),desc=f"Simulate {path.stem}",unit="batch"):
-        f=batch.to_pandas();c=cm.loc[f.candidate_id];j=jm.loc[f.job_id];fit=f.skill_score.to_numpy()*c.latent_skill_mastery.to_numpy()
-        keys=f.job_id+"|"+f.candidate_id+f"|{seed}";h=pd.util.hash_pandas_object(keys,index=False).to_numpy(dtype="uint64");u=(h.astype(float)+1)/(2**64)
-        noise=np.sin(u*2*math.pi)*.25;z=-2+1.1*fit+.65*f.occupation_score.to_numpy()+.35*f.experience_score.to_numpy()+1.15*c.latent_ability.to_numpy()+.8*c.latent_reliability.to_numpy()+.8*c.latent_domain_depth.to_numpy()-1.25*j.latent_difficulty.to_numpy()-.65*j.latent_specialization.to_numpy()*(1-fit)+noise
-        prob=1/(1+np.exp(-z));outcome=((np.bitwise_xor(h,np.uint64(0x9E3779B97F4A7C15)).astype(float)+1)/(2**64))<prob
+        f=batch.to_pandas(); simulated=simulate_pair_outcomes(f,ch,jh,seed)
+        prob=simulated.true_success_probability.to_numpy();outcome=simulated.successful_performance.to_numpy()
         result=pd.DataFrame({"job_id":f.job_id.to_numpy(),"candidate_id":f.candidate_id.to_numpy(),"relevance_grade":f.relevance_grade.to_numpy(),"true_success_probability":prob.round(6),"potential_success":outcome,"successful_performance":outcome,"selected":pd.array([pd.NA]*len(f),dtype="boolean"),"observed_success":pd.array([pd.NA]*len(f),dtype="boolean"),"simulation_version":"v1"})
         table=pa.Table.from_pandas(result,preserve_index=False)
-        if writer is None:writer=pq.ParquetWriter(out/"marketplace_outcomes.parquet",table.schema,compression="zstd")
+        if writer is None:writer=pq.ParquetWriter(temporary_path,table.schema,compression="zstd")
         writer.write_table(table);total+=len(result)
     finally:
       if writer:writer.close()
+    temporary_path.replace(final_path)
     return total
 
 def run(config_path,out,job_limit=None):
